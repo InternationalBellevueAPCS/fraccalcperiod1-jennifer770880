@@ -79,15 +79,15 @@ public class FracCalc {
 		// get int variables from fractions
 
 		// testing fraction 1 to get int values
-		if (f1.contains("_")) { // testing for mixed number
+		if (f1.contains("_")) { //mixed number
 			whole1 = Integer.parseInt(f1.substring(0, f1.indexOf("_")));
 			num1 = Integer.parseInt(f1.substring(f1.indexOf("_") + 1, f1.indexOf("/")));
 			deno1 = Integer.parseInt(f1.substring(f1.indexOf("/") + 1));
 			num1 = (whole1 * deno1) + num1; // making mixed number improper
-		} else if (f1.contains("/")) { // testing for fraction
+		} else if (f1.contains("/")) { // fraction
 			num1 = Integer.parseInt(f1.substring(0, f1.indexOf("/")));
 			deno1 = Integer.parseInt(f1.substring(f1.indexOf("/") + 1));
-		} else {// testing for whole number
+		} else {// whole number
 			whole1 = Integer.parseInt(f1.substring(0));
 			num1 = whole1;
 			deno1 = 1;
@@ -98,7 +98,7 @@ public class FracCalc {
 			whole2 = Integer.parseInt(f2.substring(0, f2.indexOf("_")));
 			num2 = Integer.parseInt(f2.substring(f2.indexOf("_") + 1, f2.indexOf("/")));
 			deno2 = Integer.parseInt(f2.substring(f2.indexOf("/") + 1));
-			num2 = whole2 * deno2 + num2;
+			num2 = (whole2 * deno2) + num2;
 		} else if (f2.contains("/")) { // fraction
 			num2 = Integer.parseInt(f2.substring(0, f2.indexOf("/")));
 			deno2 = Integer.parseInt(f2.substring(f2.indexOf("/") + 1));
@@ -111,50 +111,56 @@ public class FracCalc {
 	}
 	// TODO: Fill in the space below with helper methods
 
-	// Addition
+	// Addition: returns a string (answer)
 	public static String add(int n1, int n2, int d1, int d2) {
 	    int newn = (n1*d2) + (n2*d1);
 	    int newd = d1*d2;
 
-	    int divisor = reduce(newn, newd);
+	    int divisor = greatestCommonDivisor(newn, newd);
 	    newn/=divisor;
 	    newd/=divisor;
-	    int integerComponent=0;
+	    int whole=0;
 
 	    while(newn >= newd) {
-	        integerComponent++;
+	        whole++;
 	        newn-=newd;
 	    }
 	    String answer ="";
-	    if(integerComponent>0) {
-	        answer += integerComponent +"_";
+	    if(whole>0) {
+	        answer += whole +"_";
 	    }
 	    if(newn!=0) {
 	        answer += newn+"/"+newd;
 	    }
+	    else { //gets rid of the _ in the end if answer is a whole number
+	    	answer = whole + "";
+	    }
 	    return answer;
 	}
-	//Multiplication
+	//Multiplication: returns a string (answer)
 	public static String multiply(int n1, int n2, int d1, int d2) {
 	    int newn = n1*n2;
 	    int newd = d1*d2;
 
-	    int divisor = reduce(newn, newd);
+	    int divisor = greatestCommonDivisor(newn, newd);
 	    newn/=divisor;
 	    newd/=divisor;
 
-	    int integerComponent=0;
+	    int whole=0;
 
 	    while(newn >= newd) {
-	        integerComponent++;
+	        whole++;
 	        newn-=newd;
 	    }
 	    String answer ="";
-	    if(integerComponent>0) {
-	        answer += integerComponent +"_";
+	    if(whole>0) {
+	        answer += whole +"_";
 	    }
 	    if(newn!=0) {
 	        answer += newn+"/"+newd;
+	    }
+	    else { //gets rid of the _ in the end if answer is a whole number
+	    	answer = whole + ""; 
 	    }
 	    return answer;
 	}
@@ -176,24 +182,6 @@ public class FracCalc {
 	    } 
 
 	 }
-	 //reduce faction
-	 public static int reduce (int newn, int newd) { //
-		 int newn_abs = Math.abs (newn);
-		 int newd_abs = Math.abs (newd); //
-
-		  int min_num = Math.min (newn_abs, newd_abs);
-
-		 int divisor = 1;
-
-		 for (int i = 1; i <= min_num; i++) {
-		  if (newn%i == 0 && newd%i == 0){
-
-		  divisor = 1;
-		  }
-		    }
-		    return divisor;
-
-		 }
 	/**
 	 * greatestCommonDivisor - Find the largest integer that evenly divides two
 	 * integers. Use this helper method in the Final Checkpoint to reduce fractions.
